@@ -2,7 +2,7 @@
 include("config.php");
 
 function convertTime($ms) {
-    return floor($ms/60000) . ':' . str_pad(floor(($ms%60000)/1000), 2, '0', STR_PAD_LEFT) . '.' . str_pad(floor($ms%1000), 3, '0', STR_PAD_LEFT);
+  return floor($ms/60000) . ':' . str_pad(floor(($ms%60000)/1000), 2, '0', STR_PAD_LEFT) . '.' . str_pad(floor($ms%1000), 3, '0', STR_PAD_LEFT);
 }
 ?>
 <!DOCTYPE html>
@@ -25,6 +25,11 @@ function convertTime($ms) {
         $runs[] = $array;
       }
     }
+
+    $completedRunSort = array_column($runs, 'is_completed');
+    $igtSort = array_column($runs, 'final_igt'); 
+    array_multisort($completedRunSort, SORT_DESC, $igtSort, SORT_ASC, $runs);
+
     foreach($runs as $run) {
      ?>
     <table>
@@ -35,7 +40,7 @@ function convertTime($ms) {
      </tr>
      <?php
         echo "<tr><td>is_completed</td><td>" . ($run["is_completed"] ? "true" : "false") . "</td><td>-</td></tr>";
-        echo "<tr><td>final_igt</td><td><strong>" . convertTime($run["final_igt"]) . "</strong></td><td>-</td></tr>";
+        echo "<tr><td><strong>final_igt</strong></td><td><strong>" . convertTime($run["final_igt"]) . "</strong></td><td>-</td></tr>";
         foreach($run["timelines"] as $timeline) {
             echo "<tr><td>" . $timeline["name"] . "</td><td>" . convertTime($timeline["igt"]) . "</td><td>" .  convertTime($timeline["rta"]) . "</td></tr>";
         }
