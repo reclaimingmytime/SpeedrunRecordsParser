@@ -32,21 +32,22 @@ function convertTime($ms) {
 
     foreach($runs as $run) {
      ?>
-    <table>
-     <tr>
-        <th>Info</th>
-        <th>IGT</th>
-        <th>RTA</th>
-     </tr>
-     <?php
-        echo "<tr><td>is_completed</td><td>" . ($run["is_completed"] ? "true" : "false") . "</td><td>-</td></tr>";
-        echo "<tr><td><strong>final_igt</strong></td><td><strong>" . convertTime($run["final_igt"]) . "</strong></td><td>-</td></tr>";
-        foreach($run["timelines"] as $timeline) {
-            echo "<tr><td>" . $timeline["name"] . "</td><td>" . convertTime($timeline["igt"]) . "</td><td>" .  convertTime($timeline["rta"]) . "</td></tr>";
-        }
-        echo "</table><hr>";
-        }
-    ?>
-    </table>
+     <div style="margin: 1rem 0;">
+        <table>
+          <tr>
+              <th>Info</th>
+              <th>IGT</th>
+              <th>RTA</th>
+          </tr>
+          <?php
+              echo "<tr><td>is_completed</td><td>" . ($run["is_completed"] ? "true" : "false") . "</td><td>-</td></tr>";
+              echo "<tr><td><strong>final_igt</strong></td><td><strong>" . convertTime($run["final_igt"]) . "</strong></td><td>-</td></tr>";
+              foreach($run["timelines"] as $timeline) {
+                  echo "<tr><td>" . $timeline["name"] . "</td><td>" . convertTime($timeline["igt"]) . "</td><td>" .  convertTime($timeline["rta"]) . "</td></tr>";
+              } ?>
+        </table>
+        </div>
+        <hr>
+      <?php } ?>
   </body>
 </html>
