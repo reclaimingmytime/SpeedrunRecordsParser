@@ -10,4 +10,4 @@ Currently shows all runs with an `enter_end` time.
 
 ## Installation
 
-To use, copy the file `config.example.php` to `config.php` and change the path. Uses `/home/username/speedrunigt/` by default.
+To use, copy the file `config.example.php` to `config.php` and change the path. Uses `/home/username/speedrunigt/` by default. If you are unsure what this directory is, you can find it in Minecraft under `Options --> SpeedRunIGT Settings (icon next to FOV slider) --> Records --> Open Records Directory`
