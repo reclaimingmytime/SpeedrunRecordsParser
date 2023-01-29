@@ -30,7 +30,7 @@ function sortRuns(&$runs) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SpeedrunIGT Records</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
+    <link rel="stylesheet" href="water_dark.css">
   </head>
   <body>
     <h1>SpeedrunIGT Records</h1>
