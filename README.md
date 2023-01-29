@@ -4,7 +4,7 @@ Parses the JSON records of [SpeedRunIGT](https://github.com/RedLime/SpeedRunIGT)
 
 Uses PHP and [water.css](https://watercss.kognise.dev/) in dark mode.
 
-Currently shows all runs with an `enter_end` time.
+Currently shows all runs with an `enter_end` time. Runs get sorted by completion and achieved time, meaning slower completed runs show up higher than faster uncompleted runs.
 
 ![screenshot](https://raw.githubusercontent.com/reclaimingmytime/SpeedrunRecordsParser/main/screenshot.png)
 
