@@ -10,7 +10,8 @@ function parseJSON($igtPath) {
   foreach(glob($igtPath . "/records/*.json") as $filename) {
     $file = file_get_contents($filename);
     $array = json_decode($file, true);
-    if($array["is_completed"] || (isset($array["timelines"][6]) && $array["timelines"][6]["name"] == "enter_end")) {
+
+    if($array["is_completed"] || in_array("enter_end", array_column($array["timelines"], "name"))) {
       $runs[] = $array;
     }
   }
