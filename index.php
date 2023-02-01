@@ -46,9 +46,8 @@ function sortRuns(&$runs) {
     foreach($runs as $run) {
      ?>
       <div style="margin: 1rem 0;">
-        <caption>IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?></strong></caption>
-
-        <table style="margin-top: 1rem;">
+        <table>
+        <caption style="margin-bottom: 0.5rem;">IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?></caption>
           <tr>
             <th>Info</th>
             <th>IGT</th>
