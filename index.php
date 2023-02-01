@@ -46,26 +46,13 @@ function sortRuns(&$runs) {
     foreach($runs as $run) {
      ?>
       <div style="margin: 1rem 0;">
-        <table>
+        <caption>IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?></strong></caption>
+
+        <table style="margin-top: 1rem;">
           <tr>
             <th>Info</th>
             <th>IGT</th>
             <th>RTA</th>
-          </tr>
-          <tr>
-            <td>date</td>
-            <td><?= convertDate($run["date"]); ?></td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>is_completed</td>
-            <td><?= $run["is_completed"] ? "true" : "false" ?></td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td><strong>final_igt</strong></td>
-            <td><strong><?= convertTime($run["final_igt"]) ?></strong></td>
-            <td>-</td>
           </tr>
           <?php
             foreach($run["timelines"] as $timeline) { ?>
