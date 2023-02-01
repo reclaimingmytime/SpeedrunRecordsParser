@@ -5,6 +5,10 @@ function convertTime($ms) {
   return floor($ms/60000) . ':' . str_pad(floor(($ms%60000)/1000), 2, '0', STR_PAD_LEFT) . '.' . str_pad(floor($ms%1000), 3, '0', STR_PAD_LEFT);
 }
 
+function convertDate($ms) {
+  return date("Y-m-d H:i", $ms / 1000);
+}
+
 function parseJSON($igtPath) {
   $runs = [];
   foreach(glob($igtPath . "/records/*.json") as $filename) {
@@ -41,12 +45,17 @@ function sortRuns(&$runs) {
     
     foreach($runs as $run) {
      ?>
-     <div style="margin: 1rem 0;">
+      <div style="margin: 1rem 0;">
         <table>
           <tr>
             <th>Info</th>
             <th>IGT</th>
             <th>RTA</th>
+          </tr>
+          <tr>
+            <td>date</td>
+            <td><?= convertDate($run["date"]); ?></td>
+            <td>-</td>
           </tr>
           <tr>
             <td>is_completed</td>
@@ -68,8 +77,8 @@ function sortRuns(&$runs) {
             <?php }
           ?>
         </table>
-        </div>
-        <hr>
-      <?php } ?>
+      </div>
+      <hr>
+    <?php } ?>
   </body>
 </html>
