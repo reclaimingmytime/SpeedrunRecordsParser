@@ -10,16 +10,39 @@ function convertDate($ms) {
 }
 
 function parseJSON($igtPath) {
-  $runs = [];
+  $stats = [];
+
+  $stats["playTime"] = 0;
+  $stats["bestTime"] = 0;
+  $stats["worstTime"] = 0;
+  $stats["completedRuns"] = 0;
+  $stats["enterEndRuns"] = 0;
+  $stats["totalRuns"] = 0;
+
   foreach(glob($igtPath . "/records/*.json") as $filename) {
     $file = file_get_contents($filename);
-    $array = json_decode($file, true);
+    $record = json_decode($file, true);
 
-    if($array["is_completed"] || in_array("enter_end", array_column($array["timelines"], "name"))) {
-      $runs[] = $array;
+    $stats["totalRuns"]++;
+    $stats["playTime"] += $record["final_rta"];
+    if($record["is_completed"]) {
+      $stats["completedRuns"]++;
+    }
+    if(!$record["is_completed"] && in_array("enter_end", array_column($record["timelines"], "name"))) {
+      $stats["enterEndRuns"]++;
+    }
+    if($record["is_completed"] || in_array("enter_end", array_column($record["timelines"], "name"))) {
+      $stats["runs"][] = $record;
+    }
+
+    if($record["is_completed"] && ($stats["bestTime"] == 0 || $record["final_igt"] < $stats["bestTime"])) {
+      $stats["bestTime"] = $record["final_igt"];
+    }
+    if($record["is_completed"] && $record["final_igt"] > $stats["worstTime"]) {
+      $stats["worstTime"] = $record["final_igt"];
     }
   }
-  return $runs;
+  return $stats;
 }
 
 function sortRuns(&$runs) {
@@ -40,10 +63,14 @@ function sortRuns(&$runs) {
     <h1>SpeedrunIGT Records</h1>
 
     <?php
-    $runs = parseJSON($igtPath);
-    sortRuns($runs);
+    $stats = parseJSON($igtPath);
+    sortRuns($stats["runs"]);
+    ?>
+    <p>Total Playtime: <?= number_format($stats["playTime"] / 3600000, 2) ?> hours | Completed Runs: <?= $stats["completedRuns"] ?> | Enter End Runs: <?= $stats["enterEndRuns"] ?> | Total Runs (including resets): <?= $stats["totalRuns"] ?><br>
+    IGT Fastest Run: <?= convertTime($stats["bestTime"]) ?> | IGT Slowest Run: <?= convertTime($stats["worstTime"]) ?></p><hr>
     
-    foreach($runs as $run) {
+    <?php
+    foreach($stats["runs"] as $run) {
      ?>
       <div style="margin: 1rem 0;">
         <table>
