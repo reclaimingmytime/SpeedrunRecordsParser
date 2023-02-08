@@ -9,6 +9,10 @@ function convertDate($ms) {
   return date("Y-m-d H:i", $ms / 1000);
 }
 
+function millisecondsToHours($time) {
+  return number_format($time / 3600000, 2);
+}
+
 function hasEnterEnd($timelines) {
   return in_array("enter_end", array_column($timelines, "name"));
 }
@@ -76,8 +80,33 @@ function sortRuns(&$runs) {
     $stats = parseJSON($igtPath);
     sortRuns($stats["runs"]);
     ?>
-    <p>Total Playtime: <?= number_format($stats["playTime"] / 3600000, 2) ?> hours | Completed Runs: <?= $stats["completedRuns"] ?> | Enter End Runs: <?= $stats["enterEndRuns"] ?> | Total Runs (including resets): <?= $stats["totalRuns"] ?><br>
-    IGT Fastest Run: <?= convertTime($stats["bestTime"]) ?> | IGT Slowest Run: <?= convertTime($stats["worstTime"]) ?></p><hr>
+    <table style="margin: 1rem 0;">
+        <tr>
+            <td>Total Playtime</td>
+            <td><?= millisecondsToHours($stats["playTime"]) ?> hours</td>
+        </tr>
+        <tr>
+            <td>Completed Runs</td>
+            <td><?= $stats["completedRuns"] ?></td>
+        </tr>
+        <tr>
+            <td>Enter End Runs</td>
+            <td><?= $stats["enterEndRuns"] ?></td>
+        </tr>
+        <tr>
+            <td>Total Runs (including resets)</td>
+            <td><?= $stats["totalRuns"] ?></td>
+        </tr>
+        <tr>
+            <td>IGT Fastest Run</td>
+            <td><?= convertTime($stats["bestTime"]) ?></td>
+        </tr>
+        <tr>
+            <td>IGT Slowest Run</td>
+            <td><?= convertTime($stats["worstTime"]) ?></td>
+        </tr>
+    </table>
+    <hr>
     
     <?php
     foreach($stats["runs"] as $run) {
