@@ -9,12 +9,17 @@ function convertDate($ms) {
   return date("Y-m-d H:i", $ms / 1000);
 }
 
+function hasEnterEnd($timelines) {
+  return in_array("enter_end", array_column($timelines, "name"));
+}
+
 function parseJSON($igtPath) {
   $stats = [];
 
   $stats["playTime"] = 0;
   $stats["bestTime"] = 0;
   $stats["worstTime"] = 0;
+
   $stats["completedRuns"] = 0;
   $stats["enterEndRuns"] = 0;
   $stats["totalRuns"] = 0;
@@ -23,23 +28,28 @@ function parseJSON($igtPath) {
     $file = file_get_contents($filename);
     $record = json_decode($file, true);
 
+    // Add counter stats
     $stats["totalRuns"]++;
-    $stats["playTime"] += $record["final_rta"];
+
     if($record["is_completed"]) {
       $stats["completedRuns"]++;
     }
-    if(!$record["is_completed"] && in_array("enter_end", array_column($record["timelines"], "name"))) {
+    if(!$record["is_completed"] && hasEnterEnd($record["timelines"])) {
       $stats["enterEndRuns"]++;
     }
-    if($record["is_completed"] || in_array("enter_end", array_column($record["timelines"], "name"))) {
-      $stats["runs"][] = $record;
-    }
 
-    if($record["is_completed"] && ($stats["bestTime"] == 0 || $record["final_igt"] < $stats["bestTime"])) {
+    // Add timer stats
+    $stats["playTime"] += $record["final_rta"];
+    if($record["is_completed"] && (!$stats["bestTime"] || $record["final_igt"] < $stats["bestTime"])) {
       $stats["bestTime"] = $record["final_igt"];
     }
     if($record["is_completed"] && $record["final_igt"] > $stats["worstTime"]) {
       $stats["worstTime"] = $record["final_igt"];
+    }
+
+    // Add run record
+    if($record["is_completed"] || hasEnterEnd($record["timelines"])) {
+      $stats["runs"][] = $record;
     }
   }
   return $stats;
