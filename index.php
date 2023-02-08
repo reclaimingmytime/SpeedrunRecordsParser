@@ -28,7 +28,12 @@ function parseJSON($igtPath) {
   $stats["enterEndRuns"] = 0;
   $stats["totalRuns"] = 0;
 
-  foreach(glob($igtPath . "/records/*.json") as $filename) {
+  $files = glob($igtPath . "/records/*.json");
+  if(!$files) {
+    return [];
+  }
+
+  foreach($files as $filename) {
     $file = file_get_contents($filename);
     $record = json_decode($file, true);
 
@@ -78,7 +83,13 @@ function sortRuns(&$runs) {
 
     <?php
     $stats = parseJSON($igtPath);
-    sortRuns($stats["runs"]);
+    if(!isset($stats["runs"])) {
+      echo "<p>No completed runs found.</p></body></html>";
+      exit;
+    }
+    if(count($stats["runs"]) > 1) {
+      sortRuns($stats["runs"]);
+    }
     ?>
     <table style="margin: 1rem 0;">
         <tr>
