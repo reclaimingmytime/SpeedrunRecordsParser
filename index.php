@@ -69,6 +69,9 @@ function sortRuns(&$runs) {
   $igtSort = array_column($runs, 'final_igt'); 
   array_multisort($completedRunSort, SORT_DESC, $igtSort, SORT_ASC, $runs);
 }
+
+$stats = parseJSON($igtPath);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +86,6 @@ function sortRuns(&$runs) {
     <h1>SpeedrunIGT Records</h1>
 
     <?php
-    $stats = parseJSON($igtPath);
     if(!isset($stats["runs"])) {
       echo "<p>No completed runs found.</p></body></html>";
       exit;
