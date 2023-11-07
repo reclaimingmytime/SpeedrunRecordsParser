@@ -40,10 +40,10 @@ function parseJSON($igtPath) {
     // Add counter stats
     $stats["totalRuns"]++;
 
-    if($record["is_completed"]) {
+    if($record["is_completed"] && !isset($record["is_cheat_allowed"])) {
       $stats["completedRuns"]++;
     }
-    if(!$record["is_completed"] && hasEnterEnd($record["timelines"])) {
+    if(!$record["is_completed"] && hasEnterEnd($record["timelines"]) && !isset($record["is_cheat_allowed"])) {
       $stats["enterEndRuns"]++;
     }
 
@@ -90,6 +90,7 @@ $stats = parseJSON($igtPath);
       echo "<p>No completed runs found.</p></body></html>";
       exit;
     }
+
     if(count($stats["runs"]) > 1) {
       sortRuns($stats["runs"]);
     }
@@ -126,8 +127,10 @@ $stats = parseJSON($igtPath);
     foreach($stats["runs"] as $run) {
      ?>
       <div style="margin: 1rem 0;">
+        <?php if(isset($run["is_cheat_allowed"])) echo "<p style='font-weight: bold;'>Test run (activated cheats)</p>"; ?>
+
         <table>
-        <caption style="margin-bottom: 0.5rem;">IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?></caption>
+        <caption style="margin-bottom: 0.5rem;">IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?><br><?= $run["mc_version"] ?> | <?= $run["run_type"] ?></caption>
           <tr>
             <th>Info</th>
             <th>IGT</th>
