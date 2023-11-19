@@ -97,27 +97,27 @@ $stats = parseJSON($igtPath);
     ?>
     <table style="margin: 1rem 0;">
         <tr>
-            <td>Total Playtime</td>
+            <th>Total Playtime</th>
             <td><?= millisecondsToHours($stats["playTime"]) ?> hours</td>
         </tr>
         <tr>
-            <td>Completed Runs</td>
+            <th>Completed Runs</th>
             <td><?= $stats["completedRuns"] ?></td>
         </tr>
         <tr>
-            <td>Enter End Runs</td>
+            <th>Enter End Runs</th>
             <td><?= $stats["enterEndRuns"] ?></td>
         </tr>
         <tr>
-            <td>Total Runs (including resets)</td>
+            <th>Total Runs (including resets)</th>
             <td><?= $stats["totalRuns"] ?></td>
         </tr>
         <tr>
-            <td>IGT Fastest Run</td>
+            <th>IGT Fastest Run</th>
             <td><?= convertTime($stats["bestTime"]) ?></td>
         </tr>
         <tr>
-            <td>IGT Slowest Run</td>
+            <th>IGT Slowest Run</th>
             <td><?= convertTime($stats["worstTime"]) ?></td>
         </tr>
     </table>
@@ -130,21 +130,25 @@ $stats = parseJSON($igtPath);
         <?php if(isset($run["is_cheat_allowed"])) echo "<p style='font-weight: bold;'>Test run (activated cheats)</p>"; ?>
 
         <table>
-        <caption style="margin-bottom: 0.5rem;">IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?><br><?= $run["mc_version"] ?> | <?= $run["run_type"] ?></caption>
-          <tr>
-            <th>Info</th>
-            <th>IGT</th>
-            <th>RTA</th>
-          </tr>
-          <?php
-            foreach($run["timelines"] as $timeline) { ?>
+            <caption style="margin-bottom: 0.5rem;">IGT: <strong><?= convertTime($run["final_igt"]) ?></strong> | <?= $run["is_completed"] ? "Completed" : "<strong>Not</strong> Completed" ?> | Date: <?= convertDate($run["date"]); ?> | <?= $run["mc_version"] ?> | <?= $run["run_type"] ?></caption>
+            <thead>
               <tr>
-                <td><?= $timeline["name"]; ?></td>
-                <td><?= convertTime($timeline["igt"]); ?></td>
-                <td><?= convertTime($timeline["rta"]); ?></td>
+                <th>Info</th>
+                <th>IGT</th>
+                <th>RTA</th>
               </tr>
-            <?php }
-          ?>
+            </thead>
+            <tbody>
+              <?php
+                foreach($run["timelines"] as $timeline) { ?>
+                  <tr>
+                    <th><?= $timeline["name"]; ?></th>
+                    <td><?= convertTime($timeline["igt"]); ?></td>
+                    <td><?= convertTime($timeline["rta"]); ?></td>
+                  </tr>
+                <?php }
+              ?>
+            </tbody>
         </table>
       </div>
       <hr>
